@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>getMethod</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="newstyle.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="ddv">
+        <table class="centered">
+            <thead>
+                <tr>
+                    <th>no.</th>
+                    <th>Name</th>
+                    <th>surname</th>
+                    <th>email</th>
+                    <th>password</th>
+                </tr>
+            </thead>
+
+            <tbody id="bdy">
+            </tbody>
+        </table>
+    </div>
+    <script>
+        $(document).ready(function () {
+
+            function fetchdata() {
+                $.ajax({
+                    url: 'back2.php',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (response) {
+                        // console.log(response);
+                        var tbody = $("#bdy");
+                        for (var i = 0; i < response.length; i++) {
+                            var row = $("<tr>").appendTo(tbody);
+                            $("<td>").text(response[i]['no.']).appendTo(row);
+                            $("<td>").text(response[i]['name']).appendTo(row);
+                            $("<td>").text(response[i]['surname']).appendTo(row);
+                            $("<td>").text(response[i]['email']).appendTo(row);
+                            $("<td>").text(response[i]['Password']).appendTo(row);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(error);
+                    }
+                })
+            }
+            fetchdata();
+        })
+    </script>
+</body>
+
+</html>

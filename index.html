@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REST API Testing</title>
+
+    <!-- link css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- link script  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- link custom css  -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Include jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="row FormDiv">
+        <form class="col s12" id="FormSend">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="first_name" type="text" name="first_name" class="validate">
+                    <label for="first_name">First Name</label>
+                </div>
+                <div class="input-field col s6">
+                    <input id="last_name" type="text" name="last_name" class="validate">
+                    <label for="last_name">Last Name</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="password" type="password" name="password" class="validate">
+                    <label for="password">Password</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="email" type="email" name="email" class="validate">
+                    <label for="email">Email</label>
+                </div>
+            </div>
+            <div class="row">
+                <button class="btn waves-effect waves-light" type="submit">Submit
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $("#FormSend").submit(function (event) {
+                event.preventDefault(); // Prevent default form submission
+                var FormDeta = {
+                    first_name: $("#first_name").val(),
+                    last_name: $("#last_name").val(),
+                    email: $("#email").val(),
+                    password: $("#password").val()
+                };
+                $.ajax({
+                    url: "backend.php", // Change this to the correct URL
+                    type: "POST",
+                    dataType: "json",
+                    data: JSON.stringify(FormDeta),
+                    contentType: "application/json",
+                    success: function (response) {
+                        if (response.message === "success") {
+                            $("#first_name").val("");
+                            $("#last_name").val("");
+                            $("#email").val("");
+                            $("#password").val("");
+                            alert("Success");
+                        } else if (response.message === "failed") {
+                            alert("Failed");
+                        } else {
+                            alert("Error: " + response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error); // Log the error to the console
+                        alert("An error occurred. Please check the console for details.");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

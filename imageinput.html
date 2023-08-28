@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <input type="file" id="imageInput" accept="image/*">
+    <button id="uploadButton">Upload</button>
+    <script>
+        $(document).ready(function () {
+            $('#uploadButton').on('click', function () {
+                const selectedFile = $('#imageInput')[0].files[0];
+                if (selectedFile) {
+                    const formData = new FormData();
+                    formData.append('image', selectedFile);
+                    formData.append('additionalField', 'Some additional data'); // Add additional fields here
+
+                    $.ajax({
+                        url: 'imgback.php', // Replace with your PHP backend URL
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            console.log('Upload successful:', response);
+                        },
+                        error: function (error) {
+                            console.error('Error uploading file:', error);
+                        }
+                    });
+                } else {
+                    console.error('No file selected.');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
